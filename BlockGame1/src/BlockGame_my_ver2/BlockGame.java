@@ -23,6 +23,7 @@ public class BlockGame extends JFrame {  //클래스 이름은 대문자로 시작하는 것이 
 		                 //의 기본값은 false 기 때문에 true로 넣어줘야 함
 		introBackground = new ImageIcon(Main.class.getResource("../Images/introBackground.png")).getImage();
 	
+		Music introMusic = new Music("")
 	}
 	public void paint(Graphics g) {
 		
