@@ -1,9 +1,14 @@
 package BlockGame_my_ver2;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame; //ctrl + shift+ o 하면 필요한 패키지? 가 자동으로 생김
 
 public class BlockGame extends JFrame {  //클래스 이름은 대문자로 시작하는 것이 일반적이다.! gui를 구현하기 위해 기본적으로 상속받아야 하는 JFrame
@@ -11,7 +16,14 @@ public class BlockGame extends JFrame {  //클래스 이름은 대문자로 시작하는 것이 
 	private Image screenImage;
 	private Graphics screenGraphic;
 	
-	private Image introBackground;
+	private ImageIcon startButtonDefaultImage = new ImageIcon(Main.class.getResource("../images/start_button.jpg"));
+	private ImageIcon startButtonHoverImage = new ImageIcon(Main.class.getResource("../images/start_button(hover).png"));
+	
+	private Image background = new ImageIcon(Main.class.getResource("../images/introBackground.png"))
+			.getImage();
+	
+	private JButton startButton = new JButton(startButtonDefaultImage);
+	
 	
 	public BlockGame() {  //생성자, 클래스와 같은 이름으로...
 		setTitle("*BlockGame**"); //게임 이름
@@ -21,8 +33,32 @@ public class BlockGame extends JFrame {  //클래스 이름은 대문자로 시작하는 것이 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //게임 창 종료시, 전체 프로그램 종료
 		setVisible(true); //게임 창이 정상적으로 출력됨
 		                 //의 기본값은 false 기 때문에 true로 넣어줘야 함
-		introBackground = new ImageIcon(Main.class.getResource("../Images/introBackground.png")).getImage();
-	
+		setLayout(null);
+		
+		startButton.setBounds(220, 300, 164, 66);
+		startButton.setBorderPainted(false);
+		startButton.setContentAreaFilled(false);
+		startButton.setFocusPainted(false);
+		startButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				startButton.setIcon(startButtonHoverImage);
+				startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				startButton.setIcon(startButtonDefaultImage);
+				startButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				startButton.setVisible(false);
+				background = new ImageIcon(Main.class.getResource("../images/Default_background(black).png")).getImage();
+				
+			}
+		});
+		add(startButton);
+		
 		Music introMusic = new Music("AdhesiveWombat - Night Shade.mp3", true);
 		introMusic.start();
 	}
@@ -44,7 +80,7 @@ public class BlockGame extends JFrame {  //클래스 이름은 대문자로 시작하는 것이 
 	public void screenDraw(Graphics g) {
 		
 		//introBackground가 screenImage에 그려질 수 있도록
-		g.drawImage(introBackground, 0, 0, null);
+		g.drawImage(background, 0, 0, null);
 	    
 		//프로그램이 종료되는 순간까지 계속 paint 함수를 부르면서 이미지를 띄워줌
 		this.repaint();
